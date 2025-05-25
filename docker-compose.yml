@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  vento-mongo:
+    image: mongo:6.0
+    container_name: vento-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../VentoVSystem/mongo-data:/data/db
+
+  vento-backend:
+    build:
+      context: ../VentoVSystem/backend
+      dockerfile: Dockerfile
+    container_name: vento-backend
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    command: node src/index.js
+    depends_on:
+      - vento-mongo
+
+  excalibur-mongo:
+    image: mongo:6.0
+    container_name: excalibur-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ../ExcaliburSystem/mongo-data:/data/db
+
+  excalibur-backend:
+    build:
+      context: ../ExcaliburSystem/backend
+      dockerfile: Dockerfile
+    container_name: excalibur-backend
+    ports:
+      - "4000:4000"
+    working_dir: /app
+    command: node src/index.js
+    depends_on:
+      - excalibur-mongo
