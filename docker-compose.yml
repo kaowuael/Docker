@@ -40,3 +40,5 @@ services:
     command: node src/index.js
     depends_on:
       - excalibur-mongo
+    env_file:
+      - ../ExcaliburSystem/backend/.env
